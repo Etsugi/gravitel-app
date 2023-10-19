@@ -18,8 +18,8 @@ export const RoutePath: Record<AppRoutes, string> = {
   [AppRoutes.MAIN]: "/",
   [AppRoutes.LOGIN]: "/login",
   [AppRoutes.DASHBOARD]: "/dashboard",
-   // last
-   [AppRoutes.NOT_FOUND]: "*",
+  // last
+  [AppRoutes.NOT_FOUND]: "*",
 } as const;
 
 export const routeConfig: Record<AppRoutes, TAppRouteProps> = {
@@ -31,14 +31,15 @@ export const routeConfig: Record<AppRoutes, TAppRouteProps> = {
   [AppRoutes.LOGIN]: {
     path: RoutePath.login,
     element: <LoginPage />,
+    isPrivate: true,
   },
   [AppRoutes.DASHBOARD]: {
     path: RoutePath.dashboard,
     element: <DashboardPage />,
     isPrivate: true,
   },
-   // last
-   [AppRoutes.NOT_FOUND]: {
+  // last
+  [AppRoutes.NOT_FOUND]: {
     path: RoutePath.not_found,
     element: <DashboardPage />,
     isPrivate: true,

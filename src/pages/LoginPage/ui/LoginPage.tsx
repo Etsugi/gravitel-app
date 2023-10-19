@@ -1,23 +1,25 @@
-import { FC, ReactElement, memo, useState, useCallback, ChangeEvent } from "react";
+import { useUserStore } from "entities/User/model/store/userStore";
+import { ChangeEvent, FC, ReactElement, memo, useCallback } from "react";
 import { Button } from "shared/ui/Button/Button";
 import { Input } from "shared/ui/Input/Input";
 import "./style.css";
 
 export const LoginPage: FC = memo((): ReactElement => {
-  const [login, setLogin] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const { login, password, setLogin, setPassword, onLogin } = useUserStore();
 
   const onChangeLogin = useCallback((event: ChangeEvent<HTMLInputElement>) => {
     setLogin(event.target.value);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onChangePassword = useCallback((event: ChangeEvent<HTMLInputElement>) => {
     setPassword(event.target.value);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onSubmit = (event: ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log(login, password);
+    onLogin();
   };
 
   return (

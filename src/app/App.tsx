@@ -1,12 +1,19 @@
+import { useUserStore } from "entities/User/model/store/userStore";
+import { ReactElement, useEffect } from "react";
 import { AppRouter } from "./providers/router";
 
+function App(): ReactElement {
+  const { _initial, initAuthData } = useUserStore();
 
-function App() {
+  useEffect(() => {
+    initAuthData();
+  }, []);
+
   return (
     <div>
       {/* navbar */}
 
-      <AppRouter />
+      {_initial ? <AppRouter /> : null}
     </div>
   );
 }
