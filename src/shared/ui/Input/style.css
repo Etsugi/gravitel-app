@@ -1,0 +1,16 @@
+.input {
+  display: flex;
+  flex-grow: 1;
+  width: 100%;
+  min-width: 240px;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid gray;
+  transition-duration: 150ms;
+}
+
+.input:hover,
+.input:focus {
+  border: 1px solid orange;
+  outline: none;
+}
