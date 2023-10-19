@@ -11,7 +11,7 @@ const RequireAuth: FC<IProps> = ({ children }: IProps): ReactElement => {
   const location = useLocation();
 
   if (!auth) {
-    return <Navigate to={RoutePath.main} state={{ from: location }} replace />;
+    return <Navigate to={RoutePath.login} state={{ from: location }} replace />;
   }
 
   return children;
