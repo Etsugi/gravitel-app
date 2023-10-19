@@ -15,12 +15,17 @@ export const LoginPage: FC = memo((): ReactElement => {
     setPassword(event.target.value);
   }, []);
 
+  const onSubmit = (event: ChangeEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    console.log(login, password);
+  };
+
   return (
     <div className="login-page">
       <h1>Вход</h1>
       <p className="login-page__subtitle">Уникальная технология доступна для вашего бизнеса уже сейчас!</p>
 
-      <form className="login-page__form">
+      <form onSubmit={onSubmit} className="login-page__form">
         <Input value={login} onChange={onChangeLogin} placeholder="Логин" />
         <Input value={password} onChange={onChangePassword} placeholder="Пароль" />
 
