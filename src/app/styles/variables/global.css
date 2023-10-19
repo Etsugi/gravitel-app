@@ -1,0 +1,11 @@
+:root {
+  /* цвета */
+  --dark: #1d1d1d;
+  --gray: #868686;
+  --orange: #ea920e;
+
+  /* время анимаций */
+  --duration-s: 0.15s;
+  --duration-m: 0.3s;
+  --duration-l: 0.7s;
+}

@@ -1,0 +1,15 @@
+.button {
+  height: 60px;
+  padding: 10px;
+  border-radius: 30px;
+  border: 1px solid var(--gray);
+  outline: none;
+  background-color: var(--orange);
+  color: var(--dark);
+  transition-duration: var(--duration-s);
+  cursor: pointer;
+}
+
+.button:hover {
+  opacity: 0.8;
+}
