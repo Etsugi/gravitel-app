@@ -31,7 +31,7 @@ export const LoginPage: FC = memo((): ReactElement => {
         <Input value={login} onChange={onChangeLogin} placeholder="Логин" />
         <Input value={password} onChange={onChangePassword} placeholder="Пароль" />
 
-        <Button title="Войти" />
+        <Button>Войти</Button>
       </form>
     </div>
   );

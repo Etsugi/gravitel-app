@@ -1,15 +1,26 @@
 .button {
-  height: 60px;
+  width: fit-content;
+  height: fit-content;
   padding: 10px;
-  border-radius: 30px;
-  border: 1px solid var(--gray);
-  outline: none;
-  background-color: var(--orange);
-  color: var(--dark);
   transition-duration: var(--duration-s);
   cursor: pointer;
 }
 
-.button:hover {
+.button-default {
+  width: auto;
+  height: 60px;
+  border-radius: 30px;
+  border: 1px solid var(--gray);
+  background-color: var(--orange);
+  outline: none;
+  color: var(--dark);
+}
+.button-default:hover {
   opacity: 0.8;
+}
+
+.button-clear {
+  border: none;
+  background: none;
+  outline: none;
 }

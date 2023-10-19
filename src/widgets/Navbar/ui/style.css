@@ -2,6 +2,12 @@
   display: flex;
   justify-content: flex-end;
   width: 100%;
-  padding: 20px;
+  padding: 10px;
   background-color: var(--white);
+}
+
+.navbar-logout-icon {
+  width: 20px;
+  height: 20px;
+  fill: var(--dark);
 }
