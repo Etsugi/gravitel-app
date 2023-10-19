@@ -1,5 +1,6 @@
 import { useUserStore } from "entities/User/model/store/userStore";
 import { ReactElement, useEffect } from "react";
+import { Navbar } from "widgets/Navbar";
 import { AppRouter } from "./providers/router";
 
 function App(): ReactElement {
@@ -7,13 +8,14 @@ function App(): ReactElement {
 
   useEffect(() => {
     initAuthData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
-    <div>
-      {/* navbar */}
+    <div className="app">
+      <Navbar />
 
-      {_initial ? <AppRouter /> : null}
+      <div className="content-page">{_initial ? <AppRouter /> : null}</div>
     </div>
   );
 }

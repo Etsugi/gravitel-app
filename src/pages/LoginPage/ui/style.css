@@ -3,6 +3,8 @@
   flex-direction: column;
   align-items: center;
   max-width: 350px;
+  margin: auto;
+  gap: 20px
 }
 
 .login-page__subtitle {
