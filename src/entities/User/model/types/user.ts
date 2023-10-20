@@ -1,6 +1,6 @@
 export type TUser = {
-  username: string;
-  password: string;
+  username?: string;
+  password?: string;
   token: string;
 };
 
@@ -10,10 +10,10 @@ export interface IUserStore {
   isAuth: boolean;
   isLoading: boolean;
 
-  login: string;
+  username: string;
   password: string;
 
-  setLogin: (value: string) => void;
+  setUsername: (value: string) => void;
   setPassword: (value: string) => void;
 
   onLogin: () => void;
@@ -21,3 +21,7 @@ export interface IUserStore {
 
   initAuthData: () => void;
 }
+
+export type TUserMutations = {
+  login: TUser;
+};

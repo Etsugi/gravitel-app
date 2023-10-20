@@ -1,27 +1,37 @@
+import { USER_LOGIN } from "entities/User/model/mutations/userMutations";
+import { apolloClient } from "shared/api/apollo";
 import { LOCAL_STORAGE_USER_KEY } from "shared/const/localStorage";
 import { create } from "zustand";
-import { IUserStore, TUser } from "../types/user";
+import { IUserStore, TUserMutations } from "../types/user";
 
-export const useUserStore = create<IUserStore>((set) => ({
+export const useUserStore = create<IUserStore>((set, get) => ({
   _initial: false,
 
   isAuth: false,
   isLoading: false,
 
-  login: "",
+  username: "",
   password: "",
 
-  setLogin: (value: string) => set({ login: value }),
+  setUsername: (value: string) => set({ username: value }),
   setPassword: (value: string) => set({ password: value }),
 
   onLogin: async () => {
     set({ isLoading: true });
 
     try {
-      const response: TUser = {};
+      const { data } = await apolloClient.mutate<TUserMutations>({
+        mutation: USER_LOGIN,
+        variables: {
+          username: get().username,
+          password: get().password,
+        },
+      });
 
-      localStorage.setItem(LOCAL_STORAGE_USER_KEY, response.token);
-      set({ login: "", password: "", isAuth: true });
+      if (data?.login.token) {
+        localStorage.setItem(LOCAL_STORAGE_USER_KEY, data?.login.token);
+        set({ username: "", password: "", isAuth: true });
+      }
     } catch (error: unknown) {
       console.error(error);
     }

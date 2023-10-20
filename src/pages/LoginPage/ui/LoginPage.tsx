@@ -5,10 +5,10 @@ import { Input } from "shared/ui/Input/Input";
 import "./style.css";
 
 export const LoginPage: FC = memo((): ReactElement => {
-  const { login, password, setLogin, setPassword, onLogin } = useUserStore();
+  const { username, password, setUsername, setPassword, onLogin } = useUserStore();
 
   const onChangeLogin = useCallback((event: ChangeEvent<HTMLInputElement>) => {
-    setLogin(event.target.value);
+    setUsername(event.target.value);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -28,7 +28,7 @@ export const LoginPage: FC = memo((): ReactElement => {
       <p className="login-page__subtitle">Уникальная технология доступна для вашего бизнеса уже сейчас!</p>
 
       <form onSubmit={onSubmit} className="login-page__form">
-        <Input value={login} onChange={onChangeLogin} placeholder="Логин" />
+        <Input value={username} onChange={onChangeLogin} placeholder="Логин" />
         <Input value={password} onChange={onChangePassword} placeholder="Пароль" />
 
         <Button>Войти</Button>
