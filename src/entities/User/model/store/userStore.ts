@@ -1,7 +1,7 @@
-import { USER_LOGIN } from "entities/User/model/mutations/userMutations";
 import { apolloClient } from "shared/api/apollo";
 import { LOCAL_STORAGE_USER_KEY } from "shared/const/localStorage";
 import { create } from "zustand";
+import { USER_LOGIN } from "../mutations/userMutations";
 import { IUserStore, TUserMutations } from "../types/user";
 
 export const useUserStore = create<IUserStore>((set, get) => ({

@@ -1,4 +1,4 @@
-import { useUserStore } from "entities/User/model/store/userStore";
+import { useUserStore } from "entities/User";
 import { ChangeEvent, FC, ReactElement, memo, useCallback } from "react";
 import { Button } from "shared/ui/Button/Button";
 import { Input } from "shared/ui/Input/Input";
