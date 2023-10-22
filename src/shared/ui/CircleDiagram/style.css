@@ -1,0 +1,30 @@
+.circle-diagram {
+  border-radius: 50%;
+  transition-duration: var(--duration-s);
+  overflow: visible;
+}
+
+.circle-diagram svg:not(:root) {
+  overflow: visible;
+}
+
+.circle-diagram-track {
+  fill: none;
+  stroke-linecap: round;
+  stroke-dasharray: 100 0;
+  stroke-dashoffset: 25;
+}
+
+.circle-diagram-item-circle {
+  fill: none;
+  transition-duration: var(--duration-s);
+  cursor: pointer;
+}
+
+.circle-diagram-middle-text {
+  fill: var(--dark);
+}
+
+.circle-diagram-middle-text tspan:nth-child(2) {
+  fill: var(--orange);
+}

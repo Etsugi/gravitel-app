@@ -1,9 +1,10 @@
 import { Properties as CSSProperties } from "csstype";
-import { FC, ReactElement, useState } from "react";
-import { CircleDiagramItem } from "shared/ui/CircleDiagram/CircleDiagramItem";
-import { CircleDiagramMiddleText } from "shared/ui/CircleDiagram/CircleDiagramMiddleText";
+import { FC, ReactElement, useEffect, useState } from "react";
+import { CircleDiagramItem } from "./CircleDiagramItem";
+import { CircleDiagramMiddleText } from "./CircleDiagramMiddleText";
+import "./style.css";
 
-const defaultColors = ["red", "blue", "green", "#3f37c9"];
+const defaultColors = ["red", "blue", "green", "yellow"];
 
 export interface ICircleDiagramItem {
   value: number;
@@ -14,27 +15,31 @@ export interface ICircleDiagramItem {
 
 export interface ICircleDiagram {
   items?: ICircleDiagramItem[];
+  focusItem?: ICircleDiagramItem | null;
+  setFocus?: (item: ICircleDiagramItem) => void;
+  setBlur?: () => void;
   roundedCaps?: boolean;
   size?: "sm" | "md" | "lg" | number;
-  trackWidth?: "sm" | "md" | "lg";
-  trackColor?: string;
+  trackWidth?: "sm" | "md" | "lg" | number;
   middleText?: string;
-  totalFontSize?: number;
-  totalTextColor?: string;
-  totalSx?: CSSProperties;
+  middleTextFontSize?: number;
+  middleTextStyles?: CSSProperties;
+  className?: string;
 }
 
 export const CircleDiagram: FC<ICircleDiagram> = (props: ICircleDiagram): ReactElement => {
   const {
     items = [],
-    roundedCaps = true,
-    size = "lg",
-    trackWidth = "md",
-    trackColor = "#141517",
+    focusItem: focusItemProps = null,
+    setFocus,
+    setBlur,
+    roundedCaps = false,
+    size: sizeProps = "lg",
+    trackWidth: trackWidthProps = "md",
     middleText = "",
-    totalTextColor = "black",
-    totalFontSize = 30,
-    totalSx = {},
+    middleTextFontSize = 30,
+    middleTextStyles = {},
+    className = "",
   } = props;
 
   const [focusItem, setFocusItem] = useState<ICircleDiagramItem | null>(null);
@@ -42,58 +47,58 @@ export const CircleDiagram: FC<ICircleDiagram> = (props: ICircleDiagram): ReactE
   const currTotal: number = items.reduce((sum, current) => (sum += current.value), 0);
   let currPercentTotal: number = 0;
 
-  /**
-   * box size of chart
-   */
-  let sz: string = "";
-  let tw: number = 0;
-  let vb: string = "";
+  let size: number = 0;
+  let trackWidth: number = 0;
 
-  switch (size) {
+  switch (sizeProps) {
     case "sm":
-      sz = "216";
+      size = 216;
       break;
     case "md":
-      sz = "316";
+      size = 316;
       break;
     case "lg":
-      sz = "400";
+      size = 400;
       break;
     default:
-      sz = `${size}`;
+      size = sizeProps;
   }
 
-  switch (trackWidth) {
+  switch (trackWidthProps) {
     case "sm":
-      tw = 3;
-      vb = "0 0 36 36";
+      trackWidth = 3;
       break;
     case "md":
-      tw = 5;
-      vb = "0 0 38 38";
+      trackWidth = 5;
       break;
     case "lg":
-      tw = 7;
-      vb = "0 0 40 40";
+      trackWidth = 7;
       break;
     default:
-      tw = 0;
+      trackWidth = trackWidthProps;
   }
+
+  const viewBoxSize: number = 31.5 + trackWidth;
+  const viewBox: string = `0 0 ${viewBoxSize} ${viewBoxSize}`;
+
+  useEffect(() => {
+    setFocusItem(focusItemProps);
+  }, [focusItemProps]);
+
+  const setFocusHandler = (item: ICircleDiagramItem) => {
+    setFocusItem(item);
+    if (typeof setFocus === "function") setFocus(item);
+  };
+
+  const setBlurHandler = () => {
+    setFocusItem(null);
+    if (typeof setBlur === "function") setBlur();
+  };
 
   return (
-    <svg width={sz} height={sz}>
-      <svg viewBox={vb}>
-        <circle
-          cx="50%"
-          cy="50%"
-          r="15.91549430918954"
-          fill="none"
-          stroke={trackColor}
-          strokeWidth={tw}
-          strokeLinecap="round"
-          strokeDasharray="100 0"
-          strokeDashoffset="25"
-        />
+    <svg width={size} height={size} className={`circle-diagram ${className}`}>
+      <svg viewBox={viewBox}>
+        <circle cx="50%" cy="50%" r="15.9" strokeWidth={trackWidth} className="circle-diagram-track" />
 
         {items.map((item: ICircleDiagramItem, index) => {
           const offSet = index ? -currPercentTotal : 0;
@@ -102,17 +107,16 @@ export const CircleDiagram: FC<ICircleDiagram> = (props: ICircleDiagram): ReactE
 
           return (
             <CircleDiagramItem
-              key={index}
+              key={item.label}
               item={item}
               focusItem={focusItem}
-              displayValue={item.displayValue || `${item.value}% ${item.label}`}
               color={item?.color || defaultColors[index % defaultColors.length]}
-              trackWidth={tw}
+              trackWidth={trackWidth}
               roundedCaps={roundedCaps}
               offSet={offSet}
               itemProportion={itemProportion}
-              setFocus={() => setFocusItem(item)}
-              setBlur={() => setFocusItem(null)}
+              setFocus={setFocusHandler}
+              setBlur={setBlurHandler}
             />
           );
         })}
@@ -122,9 +126,8 @@ export const CircleDiagram: FC<ICircleDiagram> = (props: ICircleDiagram): ReactE
         middleText={middleText}
         currTotal={currTotal}
         focusItem={focusItem}
-        totalFontSize={totalFontSize}
-        totalTextColor={totalTextColor}
-        totalSx={totalSx}
+        middleTextFontSize={middleTextFontSize}
+        middleTextStyles={middleTextStyles}
       />
     </svg>
   );

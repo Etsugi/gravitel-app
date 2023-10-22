@@ -4,7 +4,6 @@ import { ICircleDiagramItem } from "./CircleDiagram";
 interface IProps {
   item: ICircleDiagramItem;
   focusItem: ICircleDiagramItem | null;
-  displayValue: string;
   roundedCaps: boolean;
   color: string;
   trackWidth: number;
@@ -19,11 +18,11 @@ export const CircleDiagramItem: FC<IProps> = (props: IProps): ReactElement => {
 
   const isFocusItem = item === focusItem;
 
-  const onFocus = () => {
+  const setFocusHandler = () => {
     setFocus(item);
   };
 
-  const onBlur = () => {
+  const setBlurHandler = () => {
     setBlur(null);
   };
 
@@ -39,19 +38,17 @@ export const CircleDiagramItem: FC<IProps> = (props: IProps): ReactElement => {
 
   return (
     <circle
-      style={{ transition: "stroke 1s ease-in-out", transitionDuration: "150" }}
       cx="50%"
       cy="50%"
-      r="15.91549430918954"
+      r="15.9"
       strokeLinecap={roundedCaps ? "round" : "inherit"}
-      fill="none"
       stroke={color}
-      strokeWidth={isFocusItem ? trackWidth * 1.2 : trackWidth}
+      strokeWidth={isFocusItem ? trackWidth * 1.35 : trackWidth}
       strokeDasharray={dashArr(item.value)}
       strokeDashoffset={offSet}
-      onMouseOver={onFocus}
-      onMouseLeave={onBlur}
-      cursor="pointer"
+      onMouseOver={setFocusHandler}
+      onMouseLeave={setBlurHandler}
+      className="circle-diagram-item-circle"
     />
   );
 };
