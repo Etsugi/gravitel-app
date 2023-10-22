@@ -1,14 +1,15 @@
 import { apolloClient } from "shared/api/apollo";
-import { IDashboardStatStore, TDashboardStatQueries } from "../types/dashboardStat";
 import { create } from "zustand";
-import { GET_DASHBOARD_STAT } from "entities/DashboardStat/model/queries/dashboardStatQueries";
+import { transformToDiagramItem } from "../helpers/transformToDiagramItem";
+import { GET_DASHBOARD_STAT } from "../queries/dashboardStatQueries";
+import { IDashboardStatStore, TDashboardStatQueries } from "../types/dashboardStat";
 
-export const dashboardStatStore = create<IDashboardStatStore>((set) => ({
+export const useDashboardStatStore = create<IDashboardStatStore>((set, get) => ({
   isLoading: false,
 
-  scenarios: [],
-  lists: [],
-  dialogs: [],
+  scenarios: null,
+  lists: null,
+  dialogs: null,
 
   getData: async () => {
     set({ isLoading: true });
@@ -18,11 +19,16 @@ export const dashboardStatStore = create<IDashboardStatStore>((set) => ({
         query: GET_DASHBOARD_STAT,
       });
 
-      console.log(data);
+      const { scenarios, lists, dialogs } = data.dashboard;
+      set({ scenarios, lists, dialogs });
     } catch (error: unknown) {
       console.error(error);
     }
 
     set({ isLoading: false });
   },
+
+  getScenariosDiagramItems: () => transformToDiagramItem(get().scenarios),
+  getListsDiagramItems: () => transformToDiagramItem(get().scenarios),
+  getDialogsDiagramItems: () => transformToDiagramItem(get().scenarios),
 }));

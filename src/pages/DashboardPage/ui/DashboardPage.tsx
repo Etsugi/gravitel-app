@@ -1,22 +1,20 @@
-import { IDashboardStatScenario, DashboardStatDiagram } from "entities/DashboardStat";
-import { FC, ReactElement, memo, useMemo } from "react";
-import { ICircleDiagramItem } from "shared/ui/CircleDiagram/CircleDiagram";
+import { DashboardStatDiagram, useDashboardStatStore } from "entities/DashboardStat";
+import { FC, ReactElement, memo, useEffect } from "react";
+import "./style.css";
 
 export const DashboardPage: FC = memo((): ReactElement => {
-  const scenario: IDashboardStatScenario = { active: 13, inactive: 4, completed: 7 };
-  const { active, inactive, completed } = scenario;
+  const { getData, getScenariosDiagramItems, getListsDiagramItems, getDialogsDiagramItems } = useDashboardStatStore();
 
-  const items = useMemo((): ICircleDiagramItem[] => {
-    return [
-      { value: active, label: "Активных", color: "#fccf82" },
-      { value: inactive, label: "Неактивных", color: "#f9a752" },
-      { value: completed, label: "Завершённых", color: "#f2f0f5" },
-    ];
-  }, [active, inactive, completed]);
+  useEffect(() => {
+    getData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
-    <div>
-      <DashboardStatDiagram items={items} middleText="Сценарии" />
+    <div className="dashboard-page">
+      <DashboardStatDiagram items={getScenariosDiagramItems()} middleText="Сценарии" />
+      <DashboardStatDiagram items={getListsDiagramItems()} middleText="Списки" />
+      <DashboardStatDiagram items={getDialogsDiagramItems()} middleText="Диалоги" />
     </div>
   );
 });
