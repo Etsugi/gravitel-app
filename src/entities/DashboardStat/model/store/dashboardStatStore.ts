@@ -29,6 +29,6 @@ export const useDashboardStatStore = create<IDashboardStatStore>((set, get) => (
   },
 
   getScenariosDiagramItems: () => transformToDiagramItem(get().scenarios),
-  getListsDiagramItems: () => transformToDiagramItem(get().scenarios),
-  getDialogsDiagramItems: () => transformToDiagramItem(get().scenarios),
+  getListsDiagramItems: () => transformToDiagramItem(get().lists),
+  getDialogsDiagramItems: () => transformToDiagramItem(get().dialogs),
 }));
