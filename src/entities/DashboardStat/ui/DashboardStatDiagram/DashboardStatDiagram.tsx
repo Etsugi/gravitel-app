@@ -39,7 +39,7 @@ export const DashboardStatDiagram: FC<IProps> = ({ items, middleText }: IProps):
         setBlur={setBlurHandler}
         roundedCaps
         size="sm"
-        trackWidth="sm"
+        strokeWidth="md"
         middleText={middleText}
         middleTextFontSize={20}
         className={focusTotal ? "dashboard-stat-diagram__circle_focus" : undefined}

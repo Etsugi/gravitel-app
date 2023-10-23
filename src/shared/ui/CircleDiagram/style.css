@@ -8,13 +8,6 @@
   overflow: visible;
 }
 
-.circle-diagram-track {
-  fill: none;
-  stroke-linecap: round;
-  stroke-dasharray: 100 0;
-  stroke-dashoffset: 25;
-}
-
 .circle-diagram-item-circle {
   fill: none;
   transition-duration: var(--duration-s);

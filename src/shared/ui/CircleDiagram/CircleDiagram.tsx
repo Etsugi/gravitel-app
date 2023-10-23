@@ -6,6 +6,25 @@ import "./style.css";
 
 const defaultColors = ["red", "blue", "green", "yellow"];
 
+const sizePreset = {
+  sm: 216,
+  md: 316,
+  lg: 400,
+} as const;
+
+const strokeWidthPreset = {
+  sm: 5,
+  md: 15,
+  lg: 45,
+} as const;
+
+const offsetRatio = {
+  top: 0.25,
+  right: 0,
+  left: 0.5,
+  bottom: -0.25,
+} as const;
+
 export interface ICircleDiagramItem {
   value: number;
   label: string;
@@ -20,7 +39,8 @@ export interface ICircleDiagram {
   setBlur?: () => void;
   roundedCaps?: boolean;
   size?: "sm" | "md" | "lg" | number;
-  trackWidth?: "sm" | "md" | "lg" | number;
+  strokeWidth?: "sm" | "md" | "lg" | number;
+  startPoint?: "top" | "right" | "bottom" | "left";
   middleText?: string;
   middleTextFontSize?: number;
   middleTextStyles?: CSSProperties;
@@ -35,7 +55,8 @@ export const CircleDiagram: FC<ICircleDiagram> = (props: ICircleDiagram): ReactE
     setBlur,
     roundedCaps = false,
     size: sizeProps = "lg",
-    trackWidth: trackWidthProps = "md",
+    strokeWidth: strokeWidthProps = "md",
+    startPoint = "left",
     middleText = "",
     middleTextFontSize = 30,
     middleTextStyles = {},
@@ -45,41 +66,14 @@ export const CircleDiagram: FC<ICircleDiagram> = (props: ICircleDiagram): ReactE
   const [focusItem, setFocusItem] = useState<ICircleDiagramItem | null>(null);
 
   const currTotal: number = items.reduce((sum, current) => (sum += current.value), 0);
-  let currPercentTotal: number = 0;
 
-  let size: number = 0;
-  let trackWidth: number = 0;
+  const size: number = typeof sizeProps === "string" ? sizePreset[sizeProps] : sizeProps;
+  const strokeWidth: number = typeof strokeWidthProps === "string" ? strokeWidthPreset[strokeWidthProps] : strokeWidthProps;
+  const radius: number = (size - strokeWidth) / 2;
+  const circumferenceLength: number = 2 * Math.PI * radius;
 
-  switch (sizeProps) {
-    case "sm":
-      size = 216;
-      break;
-    case "md":
-      size = 316;
-      break;
-    case "lg":
-      size = 400;
-      break;
-    default:
-      size = sizeProps;
-  }
-
-  switch (trackWidthProps) {
-    case "sm":
-      trackWidth = 3;
-      break;
-    case "md":
-      trackWidth = 5;
-      break;
-    case "lg":
-      trackWidth = 7;
-      break;
-    default:
-      trackWidth = trackWidthProps;
-  }
-
-  const viewBoxSize: number = 31.5 + trackWidth;
-  const viewBox: string = `0 0 ${viewBoxSize} ${viewBoxSize}`;
+  let offset: number = circumferenceLength * offsetRatio[startPoint];
+  let prevCircle: number = 0;
 
   useEffect(() => {
     setFocusItem(focusItemProps);
@@ -96,31 +90,34 @@ export const CircleDiagram: FC<ICircleDiagram> = (props: ICircleDiagram): ReactE
   };
 
   return (
-    <svg width={size} height={size} className={`circle-diagram ${className}`}>
-      <svg viewBox={viewBox}>
-        <circle cx="50%" cy="50%" r="15.9" strokeWidth={trackWidth} className="circle-diagram-track" />
+    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className={`circle-diagram ${className}`}>
+      {items.map((item: ICircleDiagramItem, index) => {
+        const circleProportion = Number((item.value / (currTotal / 100)).toFixed(3));
+        const circleWidth: number = (circumferenceLength * circleProportion) / 100;
 
-        {items.map((item: ICircleDiagramItem, index) => {
-          const offSet = index ? -currPercentTotal : 0;
-          const itemProportion = item.value / (currTotal / 100);
-          currPercentTotal += itemProportion;
+        if (index > 0) {
+          offset = prevCircle;
+        }
 
-          return (
-            <CircleDiagramItem
-              key={item.label}
-              item={item}
-              focusItem={focusItem}
-              color={item?.color || defaultColors[index % defaultColors.length]}
-              trackWidth={trackWidth}
-              roundedCaps={roundedCaps}
-              offSet={offSet}
-              itemProportion={itemProportion}
-              setFocus={setFocusHandler}
-              setBlur={setBlurHandler}
-            />
-          );
-        })}
-      </svg>
+        prevCircle = offset - circleWidth;
+
+        return (
+          <CircleDiagramItem
+            key={item.label}
+            item={item}
+            focusItem={focusItem}
+            color={item?.color || defaultColors[index % defaultColors.length]}
+            roundedCaps={roundedCaps}
+            strokeWidth={strokeWidth}
+            radius={radius}
+            offSet={offset}
+            circleWidth={circleWidth}
+            circumferenceLength={circumferenceLength}
+            setFocus={setFocusHandler}
+            setBlur={setBlurHandler}
+          />
+        );
+      })}
 
       <CircleDiagramMiddleText
         middleText={middleText}
