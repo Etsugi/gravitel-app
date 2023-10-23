@@ -1,27 +1,51 @@
-# React + TypeScript + Vite
+Тестовое задание для фронтенд-разработчика
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Необходимо реализовать простое веб-приложение на React (желательно TypeScript, но можно и JavaScript) состоящее всего из двух страниц.
 
-Currently, two official plugins are available:
+- Логин ( /login)
+- Дашборд (диаграммы с текущей статистикой /dashboard)
+- Кнопка «войти/выйти»
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Страница /dashboard недоступна для тех, кто не залогинился.
 
-## Expanding the ESLint configuration
+**Бэкэнд**
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+Приложение использует простой «бэк» на Apollo + GraphQL расположенный на heroku. Свой бэкэнд делать не нужно.
 
-- Configure the top-level `parserOptions` property like this:
+Для проверки доступности бэкэнда, можете перейти по адресу:
 
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
-```
+[https://graphql-demo.dev.aicall.ru/graphql](https://graphql-demo.dev.aicall.ru/graphql)
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+В системе заведены 2 пользователя: UserOne / pass и UserTwo / pass.
+
+**Логин**
+
+Форма для входа включает в себя 2 поля: логин + пароль. Дизайн самый простой, например
+
+![](public/login.jpg?raw=true)
+
+После успешного логина пользователь попадает на страницу /dashboard
+
+Полученный при логине токен должен быть запомнен в локальном хранилище, чтобы при последующем входе в приложение не было необходимости в повторной авторизации.
+
+**Дашборд**
+
+На странице дашборда выводятся 3 круговых диаграммы для сценариев, диалогов и списков.
+
+![](public/dashboard.jpg?raw=true)
+
+Каждая диаграмма разделена на 3 сектора: активные, неактивные и завершенные.
+
+**Поведение диаграммы:**
+
+В отсутствие ховера внутри диаграммы написано значение Всего.
+
+При ховере на секторе внутри круга пишется соответствующее число и выделяется соответствующее значение в легенде.
+
+Аналогично, при ховере на легенде подсвечивается соответствующий сектор диаграммы и внутри круга пишется его значение.
+
+При ховере на Всего подсвечивается вся диаграмма.
+
+**Логаут**
+
+При нажатии на логаут текущий токен удаляется из локального хранилища, а пользователь редиректится на /login.
