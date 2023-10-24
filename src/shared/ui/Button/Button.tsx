@@ -1,4 +1,4 @@
-import { FC, ReactElement, ButtonHTMLAttributes, memo, ReactNode } from "react";
+import { FC, ReactElement, ButtonHTMLAttributes, ReactNode } from "react";
 import "./style.css";
 
 const ButtonTheme = {
@@ -13,7 +13,7 @@ export interface IButton extends ButtonHTMLAttributes<HTMLButtonElement> {
   children?: ReactNode;
 }
 
-export const Button: FC<IButton> = memo((props: IButton): ReactElement => {
+export const Button: FC<IButton> = (props: IButton): ReactElement => {
   const { theme = ButtonTheme.DEFAULT, className, children } = props;
 
   return (
@@ -21,4 +21,4 @@ export const Button: FC<IButton> = memo((props: IButton): ReactElement => {
       {children}
     </button>
   );
-});
+};
